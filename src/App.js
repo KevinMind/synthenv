@@ -1,12 +1,17 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
+// import logo from './logo.svg';
 import './App.css';
-import Brasynth from './brasynth/brasynth'
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+
+
+import SynthEnv from './brasynth/synthenv'
 
 class App extends Component {
   render() {
     return (
-      <Brasynth/>
+      <MuiThemeProvider>
+        <SynthEnv/>
+      </MuiThemeProvider>
     );
   }
 }
