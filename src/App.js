@@ -4,13 +4,15 @@ import './App.css';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
 
-import SynthEnv from './brasynth/synthenv'
+import Oscillator from './components/oscillator'
+import WeatherRadar from './containers/weather-radar'
 
 class App extends Component {
   render() {
     return (
       <MuiThemeProvider>
-        <SynthEnv/>
+        <Oscillator/>
+        <WeatherRadar/>
       </MuiThemeProvider>
     );
   }
