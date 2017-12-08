@@ -46,3 +46,17 @@ export function setWeatherAsync(zip) {
 
   };
 }
+
+export function mouseDown(keys) {
+  return {
+    type: 'NOTE_ON',
+    keys
+  }
+}
+
+export function mouseUp(keys) {
+  return {
+    type: 'NOTE_OFF',
+    keys
+  }
+}

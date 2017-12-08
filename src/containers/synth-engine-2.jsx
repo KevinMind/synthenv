@@ -21,6 +21,7 @@ var keyList = [
 // Keyboard Controller Component
 class OnscreenKeyboard extends React.Component {
   render() {
+
     const {
       downKeys
     } = this.props;
