@@ -6,10 +6,6 @@ import RaisedButton from 'material-ui/RaisedButton';
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 
-import { countUp } from '../actions/index'
-import { bindActionCreators } from 'redux'
-import { connect } from 'react-redux';
-
 import "./synthenv.css"
 
 import Parameter from "./parameter"
@@ -93,14 +89,4 @@ class Oscillator extends Component{
   }
 }
 
-function mapStateToProps(state) {
-  return {
-    counter: state.counter
-  }
-}
-
-function mapDispatchToProps(dispatch) {
-  return bindActionCreators({countUp: countUp}, dispatch)
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(Oscillator)
+export default Oscillator

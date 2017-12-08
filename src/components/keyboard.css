@@ -1,0 +1,23 @@
+.key.up {
+  border: 1px solid;
+  color: white !important;
+
+}
+
+.key.down {
+  color: red !important;
+  border: 1px solid grey;
+  color: white !important;
+
+}
+
+.key.down button {
+  background-color: #fafafa !important;
+  color: white !important;
+
+}
+
+.key.down button div span div span {
+  color: white !important;
+  font-size: 40px !important;
+}

@@ -47,16 +47,24 @@ export function setWeatherAsync(zip) {
   };
 }
 
-export function mouseDown(keys) {
+
+export function toggleKey(key) {
   return {
-    type: 'NOTE_ON',
-    keys
+    type: 'TOGGLE_KEY',
+    key
   }
 }
 
-export function mouseUp(keys) {
+export function adjParam(param) {
   return {
-    type: 'NOTE_OFF',
-    keys
+    type: 'SET_PARAM',
+    param
+  }
+}
+
+export function changeOctave(direction) {
+  return {
+    type: "CHANGE_OCTAVE",
+    direction
   }
 }

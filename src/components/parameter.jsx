@@ -2,6 +2,10 @@ import React, { Component } from 'react';
 
 import Slider from 'material-ui/Slider'
 import "./synthenv.css"
+import { adjParam } from '../actions/index'
+
+import { bindActionCreators } from 'redux'
+import { connect } from 'react-redux';
 
 class Parameter extends Component {
     constructor(props) {
@@ -11,6 +15,7 @@ class Parameter extends Component {
         axis: "y"
       }
     }
+
 
     handleUpdate = (event, newNumber) => {
       this.setState({
@@ -43,4 +48,15 @@ class Parameter extends Component {
     }
 }
 
-export default Parameter
+function mapStateToProps(state) {
+  counter: "hello"
+}
+
+
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators({
+    adjParam: adjParam
+  }, dispatch)
+}
+
+export default connect(mapDispatchToProps)(Parameter)

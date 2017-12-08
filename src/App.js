@@ -7,6 +7,7 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import Oscillator from './components/oscillator'
 import WeatherRadar from './containers/weather-radar'
 import OnscreenKeyboard from './components/keyboard'
+import SynthEngine from './containers/synth-engine'
 
 class App extends Component {
   render() {
@@ -15,6 +16,7 @@ class App extends Component {
         <Oscillator/>
         <WeatherRadar/>
         <OnscreenKeyboard/>
+        <SynthEngine/>
       </MuiThemeProvider>
     );
   }

@@ -1,67 +1,63 @@
 import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { mouseDown, mouseUp } from "../actions/index"
+import { toggleKey, changeOctave } from "../actions/index"
 import RaisedButton from 'material-ui/RaisedButton'
+
+import './keyboard.css'
 
 
 // Keyboard Controller Component
 class OnscreenKeyboard extends Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      keys : [
-        {
-          number: 48,
-          label: 'C',
-          active: false
-        },
-        {
-          number: 53,
-          label: 'F',
-          active: false
-        },
-        {
-          number: 55,
-          label: 'G',
-          active: false
-        }
-      ]
-    }
+
+  handleKeyPress = (event) => {
+    console.log("hello")
   }
 
   mouseDown(number) {
-    let newKeys = this.state.keys
-    newKeys.map((key) => {
+    this.props.keys.map((key) => {
       if(key.number == number) {
-        key.active = true
+        this.props.toggleKey(key)
       }
-    }, this.props.mouseDown(this.state.keys))
+    })
+
   }
 
   mouseUp(number) {
-    let newKeys = this.state.keys
-    newKeys.map((key) => {
+    this.props.keys.map((key) => {
       if(key.number == number) {
-        key.active = false
+        this.props.toggleKey(key)
       }
-    }, this.props.mouseUp(this.state.keys))
+    })
+  }
+
+  changeOctave(direction) {
+    this.props.changeOctave(direction)
   }
 
   render() {
     const self = this
     return (
-      <div>
-        <p>Keys: {JSON.stringify(this.props.keys)}</p>
+      <div onKeyPress={() => this.handleKeyPress}>
+        <div>
+          <RaisedButton
+            label="Oct -"
+            onClick={() => this.changeOctave("down")}
+          />
+          <RaisedButton
+            label="Oct +"
+            onClick={() => this.changeOctave("up")}
+          />
+        </div>
         <div className="onscreen-keyboard">
-          {self.state.keys.map((key) => {
+          {self.props.keys.map((key) => {
             return (
               // Each Key looks like this.
               <RaisedButton
                 key={key.number}
                 onMouseDown={(e) => this.mouseDown(key.number)}
                 onMouseUp={(e) => this.mouseUp(key.number)}
-                className="thingy"
+                className={"key " + (key.active ? 'down' : 'up')}
                 label={key.label}
               />
             );
@@ -79,7 +75,10 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({mouseUp: mouseUp, mouseDown: mouseDown}, dispatch)
+  return bindActionCreators({
+    toggleKey: toggleKey,
+    changeOctave: changeOctave
+  }, dispatch)
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(OnscreenKeyboard)
