@@ -6,6 +6,10 @@ import RaisedButton from 'material-ui/RaisedButton';
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 
+import { setWave } from '../actions/index'
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+
 import "./synthenv.css"
 
 import Parameter from "./parameter"
@@ -23,6 +27,7 @@ class Oscillator extends Component{
   }
 
   handleChange = (event, index, value) => {
+    this.props.setWave(value)
     this.setState({
       wave: value
     });
@@ -60,7 +65,6 @@ class Oscillator extends Component{
         zDepth={2}
         style={paperStyle}
       >
-      <RaisedButton label={this.props.counter} onClick={this.props.countUp}></RaisedButton>
       <div style={styles.root}>
         <div>
           <h3>{this.props.name}</h3>
@@ -81,7 +85,8 @@ class Oscillator extends Component{
           />
       </div>
         <Parameter name="volume"/>
-        <Parameter name="frequency"/>
+        <Parameter name="filter_cutoff"/>
+        <Parameter name="filter_resonance"/>
       </div>
       </Paper>
 
@@ -89,4 +94,18 @@ class Oscillator extends Component{
   }
 }
 
-export default Oscillator
+function mapStateToProps(state) {
+  return {
+    wave: state.wave,
+    parameters: state.parameters
+  }
+}
+
+
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators({
+    setWave: setWave
+  }, dispatch)
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Oscillator)

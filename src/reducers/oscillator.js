@@ -1,11 +1,11 @@
-export default function(state = {}, action) {
+var initialState = {
+  wave: "sine"
+}
+
+export default function(state = initialState, action) {
+  console.log(state)
   switch (action.type) {
-    case "SET_VOLUME":
-      console.log(action.volume)
-      return state
-    case "SET_FREQUENCY":
-      console.log(action.frequency)
-      return state
+
     default:
       return state
   }

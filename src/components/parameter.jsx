@@ -18,6 +18,11 @@ class Parameter extends Component {
 
 
     handleUpdate = (event, newNumber) => {
+      let payLoad = {
+        name: this.props.name,
+        value: newNumber
+      }
+      this.props.adjParam(payLoad)
       this.setState({
         value: newNumber
       })
@@ -49,7 +54,7 @@ class Parameter extends Component {
 }
 
 function mapStateToProps(state) {
-  counter: "hello"
+  value: state.value
 }
 
 
@@ -59,4 +64,4 @@ function mapDispatchToProps(dispatch) {
   }, dispatch)
 }
 
-export default connect(mapDispatchToProps)(Parameter)
+export default connect(mapStateToProps, mapDispatchToProps)(Parameter)

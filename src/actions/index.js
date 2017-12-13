@@ -55,10 +55,24 @@ export function toggleKey(key) {
   }
 }
 
-export function adjParam(param) {
+export function keyDown(key) {
+  return {
+    type: "START_NOTE",
+    key
+  }
+}
+
+export function keyUp(key) {
+  return {
+    type: "STOP_NOTE",
+    key
+  }
+}
+
+export function adjParam(parameter) {
   return {
     type: 'SET_PARAM',
-    param
+    parameter
   }
 }
 
@@ -66,5 +80,12 @@ export function changeOctave(direction) {
   return {
     type: "CHANGE_OCTAVE",
     direction
+  }
+}
+
+export function setWave(wave) {
+  return {
+    type: "SET_WAVE",
+    wave
   }
 }

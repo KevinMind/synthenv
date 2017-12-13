@@ -1,46 +1,137 @@
-var keyNames = ["A", "A#", "B", "C", "C#", "D", "D#", "E", "F", "F#", "G", "G#","A"]
 
-var initialState = []
+
+
+
+
+var keyNames = [
+    {
+      note: "C",
+      key: "a",
+      status: "off"
+    },
+    {
+      note: "C#",
+      key: "w",
+      status: "off"
+    },
+    {
+      note: "D",
+      key: "s",
+      status: "off"
+    },
+    {
+      note: "D#",
+      key: "e",
+      status: "off"
+    },
+    {
+      note: "E",
+      key: "d",
+      status: "off"
+    },
+    {
+      note: "F",
+      key: "f",
+      status: "off"
+    },
+    {
+      note: "F#",
+      key: "t",
+      status: "off"
+    },
+    {
+      note: "G",
+      key: "g",
+      status: "off"
+    },
+    {
+      note: "G#",
+      key: "y",
+      status: "off"
+    },
+    {
+      note: "A",
+      key: "h",
+      status: "off"
+    },
+    {
+      note: "A#",
+      key: "u",
+      status: "off"
+    },
+    {
+      note: "B",
+      key: "j",
+      status: "off"
+    },
+    {
+      note: "C",
+      key: "k",
+      status: "off"
+    }
+]
+
+
+// Generate keyboard with labels and number values
+var initialState = {}
+var keyList = []
 var count = 36
 keyNames.map((l) => {
   let key = {
-    number: count,
-    label: l,
-    active: false
+    num: count,
+    label: l.note,
+    key: l.key,
+    status: l.status,
+    fired: false
   }
-  initialState.push(key)
+  keyList.push(key)
   count ++
 })
 
-export default function(state= initialState, action) {
+initialState["keys"] = keyList
+
+
+function keys(state = [], action) {
   switch(action.type) {
-    case 'TOGGLE_KEY':
+    case "START_NOTE":
       return state.map((key) => {
-        if(key.number !== action.key.number) {
-          return key
+        if( key.key === action.key) {
+          let newKey = {
+            ...key,
+            status: "turning_on"
+          }
+          return newKey
         }
-        return {
-           ...key,
-           active: !key.active
-        }
+        return key
       })
-    case "CHANGE_OCTAVE":
-      if(action.direction == "up") {
-        return state.map((key) => {
-          return {
+    case "STOP_NOTE":
+      return state.map((key) => {
+        if( key.key === action.key) {
+          let newKey = {
             ...key,
-            number: (key.number + 12)
+            status: "turning_off"
           }
-        })
-      } else {
-        return state.map((key) => {
-          return {
-            ...key,
-            number: (key.number - 12)
-          }
-        })
-      }
+          return newKey
+        }
+        return key
+      })
     default:
       return state
   }
+}
+
+
+export default function(state= initialState, action) {
+  switch(action.type) {
+    case "START_NOTE":
+      return Object.assign({}, state, {
+        keys: keys(state.keys, action)
+      })
+    case "STOP_NOTE":
+      return Object.assign({}, state, {
+        keys: keys(state.keys, action)
+      })
+    default:
+      return state
+      }
 }
