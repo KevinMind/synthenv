@@ -93,6 +93,18 @@ initialState["keys"] = keyList
 
 function keys(state = [], action) {
   switch(action.type) {
+    case "TOGGLE_KEY":
+      return state.map((key) => {
+        if( key.num === action.payload.num) {
+          console.log(key)
+          return {
+            ...key,
+            status: action.payload.position
+          }
+        }
+        return key
+      })
+      return state
     case "START_NOTE":
       return state.map((key) => {
         if( key.key === action.key) {
@@ -111,15 +123,38 @@ function keys(state = [], action) {
             ...key,
             status: "turning_off"
           }
+          console.log(newKey)
+          return newKey
+        }
+        console.log(key)
+        return key
+      })
+    case "KEY_ON":
+      return state.map((key) => {
+        if(key.num == action.num) {
+          let newKey = {
+            ...key,
+            status: "on"
+          }
           return newKey
         }
         return key
       })
+      case "KEY_OFF":
+        return state.map((key) => {
+          if(key.num == action.num) {
+            let newKey = {
+              ...key,
+              status: "off"
+            }
+            return newKey
+          }
+          return key
+        })
     default:
       return state
   }
 }
-
 
 export default function(state= initialState, action) {
   switch(action.type) {
@@ -128,6 +163,18 @@ export default function(state= initialState, action) {
         keys: keys(state.keys, action)
       })
     case "STOP_NOTE":
+      return Object.assign({}, state, {
+        keys: keys(state.keys, action)
+      })
+    case "KEY_ON":
+      return Object.assign({}, state, {
+        keys: keys(state.keys, action)
+      })
+    case "KEY_OFF":
+      return Object.assign({}, state, {
+        keys: keys(state.keys, action)
+      })
+    case "TOGGLE_KEY":
       return Object.assign({}, state, {
         keys: keys(state.keys, action)
       })

@@ -48,10 +48,10 @@ export function setWeatherAsync(zip) {
 }
 
 
-export function toggleKey(key) {
+export function toggleKey(payload) {
   return {
     type: 'TOGGLE_KEY',
-    key
+    payload
   }
 }
 
@@ -87,5 +87,19 @@ export function setWave(wave) {
   return {
     type: "SET_WAVE",
     wave
+  }
+}
+
+export function oscOn(num) {
+  return {
+    type: "KEY_ON",
+    num
+  }
+}
+
+export function oscOff(num) {
+  return {
+    type: "KEY_OFF",
+    num
   }
 }

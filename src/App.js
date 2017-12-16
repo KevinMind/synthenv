@@ -13,8 +13,6 @@ class App extends Component {
   render() {
     return (
       <MuiThemeProvider>
-        <Oscillator/>
-        <WeatherRadar/>
         <OnscreenKeyboard/>
         <SynthEngine/>
       </MuiThemeProvider>

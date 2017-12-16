@@ -18,7 +18,6 @@ biquadFilter.connect(audioCtx.destination);
 
 var oscillators = [];
 
-
 // ACTION: NOTE_OFF, NUM
 function stop(num) {
 //   find target oscillator
@@ -57,7 +56,7 @@ function createOscillator(num) {
 }
 
 // REDUCER: REFRESH_OSCILLATORS
-function refreshOscillators() {
+refreshOscillators() {
   console.log(oscillators)
   oscillators.map((oscillator) => {
     if(oscillator.status === "turning_on") {
@@ -77,14 +76,14 @@ function refreshOscillators() {
 }
 
 // ACTION: OSC_ON
-function StartOscillator(oscillator) {
+StartOscillator(oscillator) {
   console.log(`turning_on ${oscillator.num}`)
   oscillator.start()
   oscillator.status = "on"
 }
 
 // ACTION: OSC_OFF
-function StopOscillator(oscillator) {
+StopOscillator(oscillator) {
   let vol = (document.getElementById("volume").value / 100)
   console.log("execute")
   oscillator.stop()
@@ -94,7 +93,7 @@ function StopOscillator(oscillator) {
 }
 
 // ACTION: OSC_MANUAL_ON
-function oscToggle() {
+oscToggle() {
   let singleton = audioCtx.createOscillator();
   singleton.connect(gainNode)
   singleton.frequency.value = 440
@@ -102,40 +101,40 @@ function oscToggle() {
   singleton.start()
 }
 
-function keyToFreq(key) {
+keyToFreq(key) {
   return Math.pow(2, (key - 69) / 12) * 440;
 }
 
 
 // CONTROL OSCILLATOR PARAMETERS
-function updateVolume(value) {
+updateVolume(value) {
   let target = (value / 200) + .2
   gainNode.gain.setTargetAtTime(target, audioCtx.currentTime, 0.015);
 }
 
-function updateFrequency(value) {
+updateFrequency(value) {
   oscillators.map((oscillator) => {
     oscillator.frequency.value = value
     console.log(oscillator.frequency.value)
   })
 }
 
-function updateWave(value) {
+updateWave(value) {
   console.log(value)
   oscillators.map((oscillator) => {
     oscillator.type = value
   })
 }
 
-function updateFilterType(value) {
+updateFilterType(value) {
   biquadFilter.type = value;
 }
 
-function updateFilterCutoff(value) {
+updateFilterCutoff(value) {
   biquadFilter.frequency.value = value * 100
 }
 
-function updateFilterQ(value) {
+updateFilterQ(value) {
   console.log(value)
   biquadFilter.Q.value = value
 }

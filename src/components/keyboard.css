@@ -1,0 +1,12 @@
+.key.down {
+  border: 1px solid red;
+}
+
+.key {
+  border: 1px solid transparent;
+}
+
+.keyboard {
+  display: flex;
+  flex-wrap: wrap;
+}
