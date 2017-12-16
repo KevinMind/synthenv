@@ -16,7 +16,7 @@ class Key extends Component {
   mouseDown(num) {
     this.props.toggleKey({
       num: num,
-      position: "tunring_on"
+      position: "turning_on"
     })
   }
 
@@ -39,19 +39,16 @@ class Key extends Component {
 
   render() {
 
-    const keyStyle = {
-      width: "20px",
-      height: "20vh",
-      margin: "5px",
-      display: "block"
-    }
+
     return (
-        <RaisedButton
+        <div
           num={this.props.num}
-          label={this.props.label}
           onMouseDown={(e) => this.mouseDown(this.props.num)}
           onMouseUp={(e) => this.mouseUp(this.props.num)}
-        />
+          className={"key " + (this.props.status === "on" ? 'down' : 'up') + " " + (this.props.type === "white" ? "white": "black")}
+        >
+        {this.props.label}
+        </div>
     );
   }
 }

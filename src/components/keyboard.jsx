@@ -45,6 +45,8 @@ class OnscreenKeyboard extends Component {
                   key={key.num}
                   label={key.label}
                   num={key.num}
+                  status={key.status}
+                  type={key.type}
                 />
             );
           })}

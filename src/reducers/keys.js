@@ -1,87 +1,97 @@
-
-
-
-
-
+// GENERATE KEYREFERENCE
 var keyNames = [
     {
       note: "C",
       key: "a",
-      status: "off"
+      status: "off",
+      type: "white"
     },
     {
       note: "C#",
       key: "w",
-      status: "off"
+      status: "off",
+      type: "black"
     },
     {
       note: "D",
       key: "s",
-      status: "off"
+      status: "off",
+      type: "white"
     },
     {
       note: "D#",
       key: "e",
-      status: "off"
+      status: "off",
+      type: "black"
     },
     {
       note: "E",
       key: "d",
-      status: "off"
+      status: "off",
+      type: "white"
     },
     {
       note: "F",
       key: "f",
-      status: "off"
+      status: "off",
+      type: "white"
     },
     {
       note: "F#",
       key: "t",
-      status: "off"
+      status: "off",
+      type: "black"
     },
     {
       note: "G",
       key: "g",
-      status: "off"
+      status: "off",
+      type: "white"
     },
     {
       note: "G#",
       key: "y",
-      status: "off"
+      status: "off",
+      type: "black"
     },
     {
       note: "A",
       key: "h",
-      status: "off"
+      status: "off",
+      type: "white"
     },
     {
       note: "A#",
       key: "u",
-      status: "off"
+      status: "off",
+      type: "black"
     },
     {
       note: "B",
       key: "j",
-      status: "off"
+      status: "off",
+      type: "white"
     },
     {
       note: "C",
       key: "k",
-      status: "off"
+      status: "off",
+      type: "white"
     }
 ]
 
 
-// Generate keyboard with labels and number values
+// GENERATE KEYBOARD WITH KEYREFERENCE
 var initialState = {}
 var keyList = []
-var count = 36
+var count = 60
 keyNames.map((l) => {
   let key = {
     num: count,
     label: l.note,
     key: l.key,
     status: l.status,
+    type: l.type,
     fired: false
   }
   keyList.push(key)
@@ -91,16 +101,17 @@ keyNames.map((l) => {
 initialState["keys"] = keyList
 
 
+// STATE MUTATIONS
 function keys(state = [], action) {
   switch(action.type) {
     case "TOGGLE_KEY":
       return state.map((key) => {
         if( key.num === action.payload.num) {
-          console.log(key)
-          return {
+          let newKey = {
             ...key,
             status: action.payload.position
           }
+          return newKey
         }
         return key
       })
@@ -156,8 +167,13 @@ function keys(state = [], action) {
   }
 }
 
+// STATE REDUCERS
 export default function(state= initialState, action) {
   switch(action.type) {
+    case "TOGGLE_KEY":
+      return Object.assign({}, state, {
+        keys: keys(state.keys, action)
+      })
     case "START_NOTE":
       return Object.assign({}, state, {
         keys: keys(state.keys, action)
@@ -171,10 +187,6 @@ export default function(state= initialState, action) {
         keys: keys(state.keys, action)
       })
     case "KEY_OFF":
-      return Object.assign({}, state, {
-        keys: keys(state.keys, action)
-      })
-    case "TOGGLE_KEY":
       return Object.assign({}, state, {
         keys: keys(state.keys, action)
       })

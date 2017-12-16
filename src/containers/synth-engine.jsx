@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { oscOn, oscOff } from '../actions/index';
 // ENGINE COMPONENT
+
 class SynthEngine extends Component {
 
   constructor(props) {
@@ -62,24 +63,29 @@ class SynthEngine extends Component {
   }
 
   start(num) {
+    var self = this;
+    // current oscillators
     let oscs = this.state.oscillators
+
+    // if no oscillator registered for key, make one.
     if(oscs.filter(oscillator => oscillator.num == num).length < 1) {
-      console.log("not in oscillators")
       this.createOscillator(num);
-    } else {
-      console.log('already there')
-      console.log(this.state.oscillators)
     }
   }
 
   stop(num) {
-  //   find target oscillator
-    let check = this.state.oscillators.filter((oscillator, index) => {
-     if(oscillator.num == num) {
-       oscillator.status = 'turning_off'
-       this.refreshOscillators()
-     }
-    })
+    this.gainNode.gain.setTargetAtTime(0, this.audioCtx.currentTime, .015)
+    var self = this;
+
+    setTimeout(function(){
+      // find target oscillator
+      self.state.oscillators.filter((oscillator, index) => {
+       if(oscillator.num == num) {
+         oscillator.status = 'turning_off'
+         self.refreshOscillators()
+       }
+      })
+    }, 75)
   }
 
   createOscillator(num) {
@@ -88,16 +94,17 @@ class SynthEngine extends Component {
     oscillator.num = num;
     oscillator.type = "sine"
     oscillator.status = "turning_on";
-    // oscillator.frequency.value = this.noteNumberToFrequency(oscillator.num);
     oscillator.index = this.state.oscillators.length;
 
-  //   Wire up signal path
+    // set frequency: need to update to .setTargetAtTime
+    oscillator.frequency.value = this.noteNumberToFrequency(oscillator.num);
+
+    // Wire up signal path
     oscillator.connect(this.gainNode);
     oscs.push(oscillator)
     this.setState({
       oscillators: oscs
     }, () => {
-      console.log("done")
       this.refreshOscillators()
     })
   }
@@ -122,14 +129,15 @@ class SynthEngine extends Component {
   }
 
   stopOscillator(oscillator) {
-    // oscillator.stop()
+    oscillator.stop()
     let oscs = this.state.oscillators
     oscs.splice(oscs.indexOf(oscillator), 1)
     oscillator.status = "off"
     this.setState({
       oscillators: oscs
-    }, this.gainNode.gain.setTargetAtTime(.5, this.audioCtx.currentTime, .015))
-
+    }, () => {
+      this.props.oscOff(oscillator.num)
+    })
   }
 
 
@@ -150,14 +158,11 @@ class SynthEngine extends Component {
 
     this.props.keys.map((key) => {
       if(key.status === "turning_on") {
-        console.log("turning on key: ", key)
         this.start(key.num)
       } else if (key.status === "turning_off") {
-        console.log("turning off key: ", key)
         this.stop(key.num)
       }
     })
-
   }
 
   drawScope() {
@@ -238,7 +243,8 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return bindActionCreators({
-    oscOn: oscOn
+    oscOn: oscOn,
+    oscOff: oscOff
   }, dispatch)
 }
 

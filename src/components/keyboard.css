@@ -1,12 +1,43 @@
-.key.down {
-  border: 1px solid red;
+.keyboard {
+  display: flex;
+  width: 100%;
+  max-width: 100%;
+  overflow: scroll;
+  border: 1px solid;
+  height: 35vh;
 }
 
 .key {
-  border: 1px solid transparent;
+  border-radius: 5px !important;
+  border: 1px solid;
+  display: block;
+  text-align: center;
+  padding: 12px;
 }
 
-.keyboard {
-  display: flex;
-  flex-wrap: wrap;
+.key.white {
+  width: 2rem;
+  background: white;
+  border-color: black;
+  color: black;
+  height: 80%;
+}
+
+.key.black {
+  width: 1rem;
+  background: black;
+  color: white;
+  height: 50%;
+  margin-left: -21px;
+  margin-right: -21px;
+  z-index: 1;
+}
+
+.key.up {
+
+}
+
+.key.down {
+  color: yellow !important;
+  border-color: yellow;
 }
