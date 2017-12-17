@@ -1,0 +1,22 @@
+canvas {
+  border: 7px solid rgb(70,70,70);
+  border-style: ridge;
+  box-sizing: border-box;
+}
+
+.spec {
+  background: rgb(0,0,0) !important;
+  display: flex;
+  flex-wrap: wrap;
+  padding: 1rem;
+}
+
+.spec_list {
+  color: rgb(0,200,0);
+  padding: .4rem 1rem;
+  margin: 0;
+}
+
+@media screen and (max-width: 500px) {
+
+}

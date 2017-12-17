@@ -118,7 +118,7 @@ function keys(state = [], action) {
       return state
     case "KEY_DOWN":
       return state.map((key) => {
-        if( key.key === action.key) {
+        if( key.key === action.key && key.status === "off") {
           let newKey = {
             ...key,
             status: "turning_on"
@@ -129,7 +129,7 @@ function keys(state = [], action) {
       })
     case "KEY_UP":
       return state.map((key) => {
-        if( key.key === action.key) {
+        if( key.key === action.key && key.status === "on") {
           let newKey = {
             ...key,
             status: "turning_off"
@@ -139,28 +139,41 @@ function keys(state = [], action) {
         console.log(key)
         return key
       })
-    case "KEY_ON":
+    case "OSC_ON":
       return state.map((key) => {
-        if(key.num == action.num) {
-          let newKey = {
+        if(key.num === action.num) {
+          return {
             ...key,
             status: "on"
           }
-          return newKey
         }
         return key
       })
-      case "KEY_OFF":
-        return state.map((key) => {
-          if(key.num == action.num) {
-            let newKey = {
-              ...key,
-              status: "off"
-            }
-            return newKey
+    case "OSC_OFF":
+      return state.map((key) => {
+        if(key.num === action.num) {
+          return {
+            ...key,
+            status: "off"
           }
-          return key
-        })
+        }
+        return key
+      })
+      // can only go up 5 and down
+    case "CHANGE_OCTAVE":
+      return state.map((key) => {
+        if(action.direction === "down") {
+          return {
+            ...key,
+            num: (key.num -12)
+          }
+        } else {
+          return {
+            ...key,
+            num: (key.num +12)
+          }
+        }
+      })
     default:
       return state
   }
@@ -181,11 +194,15 @@ export default function(state= initialState, action) {
       return Object.assign({}, state, {
         keys: keys(state.keys, action)
       })
-    case "KEY_ON":
+    case "CHANGE_OCTAVE":
       return Object.assign({}, state, {
         keys: keys(state.keys, action)
       })
-    case "KEY_OFF":
+    case "OSC_ON":
+      return Object.assign({}, state, {
+        keys: keys(state.keys, action)
+      })
+    case "OSC_OFF":
       return Object.assign({}, state, {
         keys: keys(state.keys, action)
       })

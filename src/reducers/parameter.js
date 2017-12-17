@@ -5,6 +5,16 @@ var initialState = {
   "wave": "sine"
 }
 
+
+function wave(state, action) {
+  switch (action.type) {
+    case "SET_WAVE":
+      return action.wave
+    default:
+      return state
+  }
+}
+
 export default function(state=initialState, action) {
   switch (action.type) {
     case "SET_PARAM":
@@ -16,8 +26,9 @@ export default function(state=initialState, action) {
       }
       return state
     case "SET_WAVE":
-      state["wave"] = action.wave
-      return state
+      return Object.assign({}, state, {
+        wave: wave(state.wave, action)
+      })
     default:
       return state
   }

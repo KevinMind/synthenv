@@ -2,6 +2,11 @@ import React, {Component} from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { oscOn, oscOff, keyDown, keyUp, toggleKey } from '../actions/index';
+
+import "./synth-engine.css"
+
+
+import Paper from 'material-ui/Paper'
 // ENGINE COMPONENT
 
 class SynthEngine extends Component {
@@ -44,12 +49,36 @@ class SynthEngine extends Component {
 
   componentDidMount() {
     // LISTEN FOR KEYUP AND KEYDOWN EVENTS
+    window.addEventListener('keydown', (e) => {
+      this.props.keyDown(e.key)
+    })
+
     window.addEventListener('keyup', (e) => {
       this.props.keyUp(e.key)
     })
+  }
 
-    window.addEventListener('keydown', (e) => {
-      this.props.keyDown(e.key)
+  componentWillReceiveProps() {
+    this.gainNode.gain.setTargetAtTime(((this.props.parameters.volume/ 200)+ .2), this.audioCtx.currentTime, 0.015);
+  }
+
+  componentDidUpdate() {
+
+    this.scopeCtx = this.refs.canvasScope.getContext('2d')
+    this.spectCtx = this.refs.canvasSpect.getContext('2d')
+
+    var bufferLength = this.analyser.frequencyBinCount;
+    var dataArray = new Uint8Array(bufferLength);
+    this.analyser.getByteTimeDomainData(dataArray);
+
+    this.draw()
+
+    this.props.keys.map((key) => {
+      if(key.status === "turning_on") {
+        this.start(key.num)
+      } else if (key.status === "turning_off") {
+        this.stop(key.num)
+      }
     })
   }
 
@@ -88,12 +117,13 @@ class SynthEngine extends Component {
     let oscs = this.state.oscillators
     let oscillator = this.audioCtx.createOscillator();
     oscillator.num = num;
-    oscillator.type = "sine"
+    oscillator.type = this.props.parameters.wave
     oscillator.status = "turning_on";
     oscillator.index = this.state.oscillators.length;
 
     // set frequency: need to update to .setTargetAtTime
-    oscillator.frequency.value = this.noteNumberToFrequency(oscillator.num);
+    oscillator.frequency.setTargetAtTime(this.noteNumberToFrequency(oscillator.num), this.audioCtx.currentTime, .0015)
+    // oscillator.frequency.value = this.noteNumberToFrequency(oscillator.num);
 
     // Wire up signal path
     oscillator.connect(this.gainNode);
@@ -139,31 +169,6 @@ class SynthEngine extends Component {
     })
   }
 
-
-  componentWillReceiveProps() {
-    this.gainNode.gain.setTargetAtTime(((this.props.parameters.volume/ 200)+ .2), this.audioCtx.currentTime, 0.015);
-  }
-
-  componentDidUpdate() {
-
-    this.scopeCtx = this.refs.canvasScope.getContext('2d')
-    this.spectCtx = this.refs.canvasSpect.getContext('2d')
-
-    var bufferLength = this.analyser.frequencyBinCount;
-    var dataArray = new Uint8Array(bufferLength);
-    this.analyser.getByteTimeDomainData(dataArray);
-
-    this.draw()
-
-    this.props.keys.map((key) => {
-      if(key.status === "turning_on") {
-        this.start(key.num)
-      } else if (key.status === "turning_off") {
-        this.stop(key.num)
-      }
-    })
-  }
-
   drawScope() {
     var ctx = this.scopeCtx
     var width = ctx.canvas.width;
@@ -175,7 +180,7 @@ class SynthEngine extends Component {
 
     this.analyser.getByteTimeDomainData(timeData);
 
-    ctx.fillStyle = 'rgba(0, 0, 0)';
+    ctx.fillStyle = 'rgb(0, 0, 0)';
     ctx.fillRect(0, 0, width, height);
 
     ctx.lineWidth = 2;
@@ -203,7 +208,7 @@ class SynthEngine extends Component {
     var scaling = height / 256;
 
     this.analyser.getByteFrequencyData(freqData);
-    ctx.fillStyle = 'rgba(0, 20, 0, 0.1)';
+    ctx.fillStyle = 'rgb(0, 0, 0)';
     ctx.fillRect(0, 0, width, height);
 
     ctx.lineWidth = 2;
@@ -221,13 +226,30 @@ class SynthEngine extends Component {
     requestAnimationFrame(this.draw)
   }
 
+  oscFreqs = () => {
+    if(this.state.oscillators.length == 0) {
+      return (<span>no active oscillators</span>)
+    } else {
+      return this.state.oscillators.map((oscillator) => {
+        return (<span>[{Math.round(oscillator.frequency.value)}]</span>)
+      })
+    }
+  }
+
   render() {
 
+
     return (
-      <div>
-        <canvas id="scope" ref="canvasScope"/>
-        <canvas id="spectrum" ref="canvasSpect"/>
-      </div>
+      <Paper className="spec">
+        <div>
+          <canvas id="scope" ref="canvasScope"/>
+          <canvas id="spectrum" ref="canvasSpect"/>
+        </div>
+        <div>
+          <p className="spec_list">Frequencies: {this.oscFreqs()}</p>
+          <p className="spec_list">Wave: Sine</p>
+        </div>
+      </Paper>
     )
   }
 }

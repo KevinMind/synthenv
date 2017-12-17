@@ -47,7 +47,6 @@ export function setWeatherAsync(zip) {
   };
 }
 
-
 export function toggleKey(payload) {
   return {
     type: 'TOGGLE_KEY',
@@ -76,13 +75,6 @@ export function adjParam(parameter) {
   }
 }
 
-export function changeOctave(direction) {
-  return {
-    type: "CHANGE_OCTAVE",
-    direction
-  }
-}
-
 export function setWave(wave) {
   return {
     type: "SET_WAVE",
@@ -92,14 +84,22 @@ export function setWave(wave) {
 
 export function oscOn(num) {
   return {
-    type: "KEY_ON",
+    type: "OSC_ON",
     num
   }
 }
 
 export function oscOff(num) {
   return {
-    type: "KEY_OFF",
+    type: "OSC_OFF",
     num
+  }
+}
+
+export function changeOctave(direction) {
+  console.log(`ACTION: ${direction}`)
+  return {
+    type: "CHANGE_OCTAVE",
+    direction: direction
   }
 }

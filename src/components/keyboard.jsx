@@ -1,9 +1,12 @@
 import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { toggleKey, changeOctave, keyDown, keyUp } from "../actions/index"
+import { changeOctave } from "../actions/index"
+
 import './keyboard.css'
 import Key from './key'
+import Wave from './wave'
+
 import RaisedButton from 'material-ui/RaisedButton'
 
 
@@ -26,18 +29,23 @@ class OnscreenKeyboard extends Component {
     }
 
     return (
-      <div>
-        <div>
-          <RaisedButton
-            label="Oct -"
-            onClick={() => this.changeOctave("down")}
-          />
-          <RaisedButton
-            label="Oct +"
-            onClick={() => this.changeOctave("up")}
-          />
+      <div className="keyboard_container">
+        <div className="keyboard_controls">
+          <div className="control_component">
+            <RaisedButton
+              label="Oct -"
+              onClick={() => this.changeOctave("down")}
+            />
+            <RaisedButton
+              label="Oct +"
+              onClick={() => this.changeOctave("up")}
+            />
+          </div>
+          <div className="control_component">
+            <Wave/>
+          </div>
         </div>
-        <div className="keyboard">
+        <div className="keyboard_keybed">
         {self.props.keys.map((key) => {
             return (
               // Each Key looks like this.
@@ -68,4 +76,4 @@ function mapDispatchToProps(dispatch) {
   }, dispatch)
 }
 
-export default connect(mapStateToProps)(OnscreenKeyboard)
+export default connect(mapStateToProps, mapDispatchToProps)(OnscreenKeyboard)

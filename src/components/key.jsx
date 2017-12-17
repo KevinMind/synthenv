@@ -6,12 +6,6 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 class Key extends Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      down: false
-    }
-  }
 
   mouseDown(num) {
     this.props.toggleKey({
