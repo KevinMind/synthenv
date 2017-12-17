@@ -72,8 +72,8 @@
 }
 
 .key.white {
-  width: 90px;
-  min-width: 90px;
+  width: 60px;
+  min-width: 60px;
   background: white;
   border-color: black;
   color: black;
@@ -83,8 +83,8 @@
 }
 
 .key.black {
-  width: 45px;
-  min-width: 45px;
+  width: 30px;
+  min-width: 30px;
   background: black;
   height: 40%;
   margin-left: -30px;
