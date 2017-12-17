@@ -23,9 +23,10 @@
   align-items: center;
 }
 
-.keyboard_controls .control_component {
+.control_component {
   display: flex;
   margin: 0 5px;
+  flex-grow: 0 !important;
 }
 
 .keyboard_controls .control_component * {
@@ -53,6 +54,7 @@
   color: black;
   height: 80%;
   margin: 0;
+  border-bottom: 6px solid rgb(140,140,140);
 }
 
 .key.black {
@@ -73,4 +75,9 @@
 .key.down {
   color: yellow !important;
   border-color: yellow;
+}
+
+.parameter {
+  margin: 0 auto;
+  padding: 15px;
 }

@@ -18,8 +18,9 @@ class Parameter extends Component {
 
 
     handleUpdate = (event, newNumber) => {
+      let type = "SET_" + this.props.name.toUpperCase()
       let payLoad = {
-        name: this.props.name,
+        type: type,
         value: newNumber
       }
       this.props.adjParam(payLoad)

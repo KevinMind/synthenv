@@ -6,6 +6,7 @@ import { changeOctave } from "../actions/index"
 import './keyboard.css'
 import Key from './key'
 import Wave from './wave'
+import Parameter from './parameter'
 
 import RaisedButton from 'material-ui/RaisedButton'
 
@@ -18,6 +19,7 @@ class OnscreenKeyboard extends Component {
     this.props.changeOctave(direction)
   }
 
+
   render() {
     const self = this
 
@@ -27,6 +29,7 @@ class OnscreenKeyboard extends Component {
       alignItems: "center",
       flexWrap: "wrap"
     }
+
 
     return (
       <div className="keyboard_container">
@@ -45,19 +48,26 @@ class OnscreenKeyboard extends Component {
             <Wave/>
           </div>
         </div>
-        <div className="keyboard_keybed">
-        {self.props.keys.map((key) => {
-            return (
-              // Each Key looks like this.
-                <Key
-                  key={key.num}
-                  label={key.label}
-                  num={key.num}
-                  status={key.status}
-                  type={key.type}
-                />
-            );
-          })}
+        <div className="control_component">
+          <div className="keyboard_keybed">
+          {self.props.keys.map((key) => {
+              return (
+                // Each Key looks like this.
+                  <Key
+                    key={key.num}
+                    label={key.label}
+                    num={key.num}
+                    status={key.status}
+                    type={key.type}
+                  />
+              );
+            })}
+          </div>
+          <div className="control_component">
+            <Parameter name="volume"/>
+            <Parameter name="cutoff"/>
+            <Parameter name="resonance"/>
+          </div>
         </div>
       </div>
     );
@@ -66,7 +76,8 @@ class OnscreenKeyboard extends Component {
 
 function mapStateToProps(state) {
   return {
-    keys: state.keys.keys
+    keys: state.keys.keys,
+    parameters: state.parameters
   }
 }
 

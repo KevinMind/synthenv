@@ -59,7 +59,15 @@ class SynthEngine extends Component {
   }
 
   componentWillReceiveProps() {
-    this.gainNode.gain.setTargetAtTime(((this.props.parameters.volume/ 200)+ .2), this.audioCtx.currentTime, 0.015);
+
+    this.gainNode.gain.setTargetAtTime(this.props.parameters.volume, this.audioCtx.currentTime, 0.015);
+    this.biquadFilter.frequency.setTargetAtTime((this.props.parameters.cutoff * 10000), this.audioCtx.currentTime, 0.015)
+    this.biquadFilter.Q.setTargetAtTime((this.props.parameters.resonance * 50), this.audioCtx.currentTime, 0.015)
+
+    this.state.oscillators.map((osc) => {
+      osc.type = this.props.parameters.wave
+    })
+
   }
 
   componentDidUpdate() {
@@ -108,7 +116,7 @@ class SynthEngine extends Component {
     self.state.oscillators.filter((oscillator, index) => {
      if(oscillator.num == num) {
        oscillator.status = 'turning_off'
-       self.refreshOscillators()
+       this.stopOscillator(oscillator)
      }
     })
   }
@@ -131,33 +139,20 @@ class SynthEngine extends Component {
     this.setState({
       oscillators: oscs
     }, () => {
-      this.refreshOscillators()
-    })
-  }
-
-  refreshOscillators() {
-    this.state.oscillators.map((oscillator) => {
-      if(oscillator.status === "turning_on") {
-        this.startOscillator(oscillator)
-      } else if (oscillator.status === "turning_off") {
-        this.stopOscillator(oscillator)
-      } else {
-        console.log(oscillator.status)
-      }
+      this.startOscillator(oscillator)
     })
   }
 
   startOscillator(oscillator) {
     // oscillator.start()
-    this.gainNode.gain.setTargetAtTime(.5, this.audioCtx.currentTime, .015)
-
+    // this.gainNode.gain.setTargetAtTime(this.props.parameters.volume, this.audioCtx.currentTime, .0015)
     oscillator.start()
     oscillator.status = "on"
     this.props.oscOn(oscillator.num)
   }
 
   stopOscillator(oscillator) {
-    this.gainNode.gain.setTargetAtTime(0, this.audioCtx.currentTime, .015)
+    // this.gainNode.gain.setTargetAtTime(0, this.audioCtx.currentTime, .0015)
     oscillator.stop()
     let oscs = this.state.oscillators
     oscs.splice(oscs.indexOf(oscillator), 1)
@@ -247,7 +242,7 @@ class SynthEngine extends Component {
         </div>
         <div>
           <p className="spec_list">Frequencies: {this.oscFreqs()}</p>
-          <p className="spec_list">Wave: Sine</p>
+          <p className="spec_list">Wave: {this.props.parameters.wave}</p>
         </div>
       </Paper>
     )

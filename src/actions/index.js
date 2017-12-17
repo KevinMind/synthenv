@@ -68,10 +68,10 @@ export function keyUp(key) {
   }
 }
 
-export function adjParam(parameter) {
+export function adjParam(payload) {
   return {
-    type: 'SET_PARAM',
-    parameter
+    type: payload.type,
+    payload
   }
 }
 
