@@ -116,7 +116,7 @@ function keys(state = [], action) {
         return key
       })
       return state
-    case "START_NOTE":
+    case "KEY_DOWN":
       return state.map((key) => {
         if( key.key === action.key) {
           let newKey = {
@@ -127,14 +127,13 @@ function keys(state = [], action) {
         }
         return key
       })
-    case "STOP_NOTE":
+    case "KEY_UP":
       return state.map((key) => {
         if( key.key === action.key) {
           let newKey = {
             ...key,
             status: "turning_off"
           }
-          console.log(newKey)
           return newKey
         }
         console.log(key)
@@ -174,11 +173,11 @@ export default function(state= initialState, action) {
       return Object.assign({}, state, {
         keys: keys(state.keys, action)
       })
-    case "START_NOTE":
+    case "KEY_DOWN":
       return Object.assign({}, state, {
         keys: keys(state.keys, action)
       })
-    case "STOP_NOTE":
+    case "KEY_UP":
       return Object.assign({}, state, {
         keys: keys(state.keys, action)
       })

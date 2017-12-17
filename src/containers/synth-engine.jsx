@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { oscOn, oscOff } from '../actions/index';
+import { oscOn, oscOff, keyDown, keyUp, toggleKey } from '../actions/index';
 // ENGINE COMPONENT
 
 class SynthEngine extends Component {
@@ -45,11 +45,11 @@ class SynthEngine extends Component {
   componentDidMount() {
     // LISTEN FOR KEYUP AND KEYDOWN EVENTS
     window.addEventListener('keyup', (e) => {
-      console.log(`${e.key} keyup`)
+      this.props.keyUp(e.key)
     })
 
     window.addEventListener('keydown', (e) => {
-      console.log(`${e.key} keydown`)
+      this.props.keyDown(e.key)
     })
   }
 
@@ -74,18 +74,14 @@ class SynthEngine extends Component {
   }
 
   stop(num) {
-    this.gainNode.gain.setTargetAtTime(0, this.audioCtx.currentTime, .015)
     var self = this;
-
-    setTimeout(function(){
       // find target oscillator
-      self.state.oscillators.filter((oscillator, index) => {
-       if(oscillator.num == num) {
-         oscillator.status = 'turning_off'
-         self.refreshOscillators()
-       }
-      })
-    }, 75)
+    self.state.oscillators.filter((oscillator, index) => {
+     if(oscillator.num == num) {
+       oscillator.status = 'turning_off'
+       self.refreshOscillators()
+     }
+    })
   }
 
   createOscillator(num) {
@@ -123,12 +119,15 @@ class SynthEngine extends Component {
 
   startOscillator(oscillator) {
     // oscillator.start()
+    this.gainNode.gain.setTargetAtTime(.5, this.audioCtx.currentTime, .015)
+
     oscillator.start()
     oscillator.status = "on"
     this.props.oscOn(oscillator.num)
   }
 
   stopOscillator(oscillator) {
+    this.gainNode.gain.setTargetAtTime(0, this.audioCtx.currentTime, .015)
     oscillator.stop()
     let oscs = this.state.oscillators
     oscs.splice(oscs.indexOf(oscillator), 1)
@@ -244,7 +243,10 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return bindActionCreators({
     oscOn: oscOn,
-    oscOff: oscOff
+    oscOff: oscOff,
+    toggleKey: toggleKey,
+    keyUp: keyUp,
+    keyDown: keyDown
   }, dispatch)
 }
 

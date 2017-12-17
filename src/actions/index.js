@@ -57,14 +57,14 @@ export function toggleKey(payload) {
 
 export function keyDown(key) {
   return {
-    type: "START_NOTE",
+    type: "KEY_DOWN",
     key
   }
 }
 
 export function keyUp(key) {
   return {
-    type: "STOP_NOTE",
+    type: "KEY_UP",
     key
   }
 }
