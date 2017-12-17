@@ -23,11 +23,11 @@ class Key extends Component {
 
   handleTouch = (num, trig) => {
     if(trig == "on") this.mouseDown(num)
-    if(trig == "off") this.mouseUp(num)
+    this.mouseUp(num)
   }
 
   render() {
-    
+
     return (
         <div
           num={this.props.num}
