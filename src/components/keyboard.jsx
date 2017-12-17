@@ -32,7 +32,7 @@ class OnscreenKeyboard extends Component {
 
 
     return (
-      <div className="keyboard_container">
+      <div className="master_container">
         <div className="keyboard_controls">
           <div className="control_component">
             <RaisedButton
@@ -48,22 +48,26 @@ class OnscreenKeyboard extends Component {
             <Wave/>
           </div>
         </div>
-        <div className="control_component">
-          <div className="keyboard_keybed">
-          {self.props.keys.map((key) => {
-              return (
-                // Each Key looks like this.
-                  <Key
-                    key={key.num}
-                    label={key.label}
-                    num={key.num}
-                    status={key.status}
-                    type={key.type}
-                  />
-              );
-            })}
+        <div className="keyboard_container">
+          <div className="keyboard_keybed_container">
+            <div className="keyboard_keybed">
+              {self.props.keys.map((key) => {
+                  return (
+                    // Each Key looks like this.
+                      <Key
+                        key={key.num}
+                        label={key.num}
+                        num={key.num}
+                        status={key.status}
+                        type={key.type}
+                      />
+                  );
+                })}
+            </div>
+            <div className="keyboard_scroll">Scroll Bar</div>
           </div>
-          <div className="control_component">
+
+          <div className="keyboard_controls">
             <Parameter name="volume"/>
             <Parameter name="cutoff"/>
             <Parameter name="resonance"/>

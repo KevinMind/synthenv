@@ -21,15 +21,10 @@ class Key extends Component {
     })
   }
 
-  toggleKey(key) {
-    this.setState({
-      down: !this.state.down
-    }, () => {
-    })
+  handleTouch = (num, trig) => {
+    this.mouseDown(num)
   }
 
-  componentWillMount() {
-  }
 
   render() {
 
@@ -39,8 +34,7 @@ class Key extends Component {
           num={this.props.num}
           onMouseDown={(e) => this.mouseDown(this.props.num)}
           onMouseUp={(e) => this.mouseUp(this.props.num)}
-          onTouchStart={this.mouseDown(this.props.num)}
-          onTouchEnd={this.mouseUp(this.props.num)}
+          onTouchStart={this.handleTouch.bind(null, this.props.num, "on")}
           className={"key " + (this.props.status === "on" ? 'down' : 'up') + " " + (this.props.type === "white" ? "white": "black")}
         >
         {this.props.label}
