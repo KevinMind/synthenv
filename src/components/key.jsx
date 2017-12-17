@@ -22,7 +22,10 @@ class Key extends Component {
   }
 
   handleTouch = (num, trig) => {
-    if(trig == "on") this.mouseDown(num)
+    if(trig == "on") {
+      this.mouseDown(num)
+      return
+    }
     this.mouseUp(num)
   }
 
