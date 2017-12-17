@@ -28,7 +28,7 @@ class Key extends Component {
     })
   }
 
-  componentDidMount() {
+  componentWillMount() {
   }
 
   render() {
@@ -39,6 +39,8 @@ class Key extends Component {
           num={this.props.num}
           onMouseDown={(e) => this.mouseDown(this.props.num)}
           onMouseUp={(e) => this.mouseUp(this.props.num)}
+          onTouchStart={this.mouseDown(this.props.num)}
+          onTouchEnd={this.mouseUp(this.props.num)}
           className={"key " + (this.props.status === "on" ? 'down' : 'up') + " " + (this.props.type === "white" ? "white": "black")}
         >
         {this.props.label}
