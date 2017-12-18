@@ -17,6 +17,7 @@ class App extends Component {
       <MuiThemeProvider muiTheme={getMuiTheme(darkBaseTheme)} style={{backgroundColor: "black"}}>
         <OnscreenKeyboard/>
         <SynthEngine/>
+        <WeatherRadar style={{backgroundColor: "black"}}/>
       </MuiThemeProvider>
     );
   }

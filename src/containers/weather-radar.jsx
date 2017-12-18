@@ -3,7 +3,7 @@ import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import { setWeatherAsync } from '../actions/index'
+import { getWeather } from '../actions/index'
 
 /**
  * The input is used to create the `dataSource`, so the input always matches three entries.
@@ -25,7 +25,7 @@ class WeatherRadar extends Component {
 
   requestWeather = () => {
     let zip = this.state.zip
-    this.props.setWeatherAsync(zip)
+    this.props.getWeather(zip)
   }
 
 
@@ -51,7 +51,7 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({setWeatherAsync: setWeatherAsync}, dispatch)
+  return bindActionCreators({getWeather: getWeather}, dispatch)
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(WeatherRadar)

@@ -13,7 +13,7 @@ export function setWeather(data) {
   }
 }
 
-export function setWeatherAsync(zip) {
+export function getWeather(zip) {
   return function (dispatch) {
     const APIKEY = "e25edf705026ebe65407c261ae674b0b"
     var url = `http://api.openweathermap.org/data/2.5/weather?zip=${zip}&APPID=${APIKEY}`
